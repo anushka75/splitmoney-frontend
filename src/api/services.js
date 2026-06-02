@@ -47,8 +47,18 @@ export async function addGroupMember(groupId, payload) {
   return data;
 }
 
+export async function inviteGroupMember(groupId, payload) {
+  const { data } = await client.post(`/groups/${groupId}/invite`, payload);
+  return data;
+}
+
 export async function deleteGroup(groupId) {
   const { data } = await client.delete(`/groups/${groupId}`);
+  return data;
+}
+
+export async function leaveGroup(groupId) {
+  const { data } = await client.post(`/groups/${groupId}/leave`);
   return data;
 }
 

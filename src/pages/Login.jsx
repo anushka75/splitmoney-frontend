@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getApiErrorMessage } from "../api/error";
 import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
@@ -16,12 +17,12 @@ export default function Login() {
       await auth.login(form);
       navigate("/dashboard");
     } catch (err) {
-      setError(err?.response?.data?.message || "Login failed");
+      setError(getApiErrorMessage(err, "Login failed"));
     }
   };
 
   return (
-    <div className="app-shell layout" style={{ display: "grid", placeItems: "center" }}>
+    <div className="layout" style={{ display: "grid", placeItems: "center", minHeight: "100vh" }}>
       <form className="card stack" onSubmit={submit} style={{ width: "min(440px, 100%)", padding: 24 }}>
         <div>
           <h1>Welcome back</h1>

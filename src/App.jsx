@@ -8,12 +8,13 @@ import Groups from "./pages/Groups";
 import GroupDetails from "./pages/GroupDetails";
 import Expenses from "./pages/Expenses";
 import { useAuth } from "./context/AuthContext";
+import AppShell from "./components/AppShell";
 
 function ProtectedRoute({ children }) {
   const auth = useAuth();
   if (auth?.loading) return <div className="app-shell"><p>Loading...</p></div>;
   if (!auth?.user) return <Navigate to="/" replace />;
-  return children;
+  return <AppShell>{children}</AppShell>;
 }
 
 export default function App(){

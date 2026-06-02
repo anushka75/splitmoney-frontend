@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchDashboard } from "../api/services";
 import { useAuth } from "../context/AuthContext";
@@ -7,14 +7,19 @@ import { useAuth } from "../context/AuthContext";
 export default function Dashboard() {
   const [data, setData] = useState({});
   const auth = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchDashboard().then(setData).catch(() => setData({}));
+    fetchDashboard()
+      .then((response) => {
+        setData(response || {});
+      })
+      .catch(() => setData({}));
   }, []);
 
+  const stats = data?.stats ?? data ?? {};
+
   return (
-    <div className="app-shell layout stack">
+    <div className="layout stack">
       <div className="row card" style={{ padding: 20 }}>
         <div>
           <div className="pill">Dashboard</div>
@@ -23,17 +28,16 @@ export default function Dashboard() {
         </div>
         <div className="row">
           <Link className="btn secondary" to="/groups">Groups</Link>
-          <button className="btn secondary" onClick={() => { auth.logout(); navigate("/"); }}>Logout</button>
         </div>
       </div>
       <div className="grid grid-2">
         <div className="card" style={{ padding: 20 }}>
           <h3>Total balance</h3>
-          <p style={{ fontSize: 36, margin: 0 }}>{data.totalBalance ?? "0.00"}</p>
+          <p style={{ fontSize: 36, margin: 0 }}>{stats.total_expenses ?? "0.00"}</p>
         </div>
         <div className="card" style={{ padding: 20 }}>
           <h3>Open groups</h3>
-          <p style={{ fontSize: 36, margin: 0 }}>{data.groupCount ?? 0}</p>
+          <p style={{ fontSize: 36, margin: 0 }}>{stats.total_groups ?? 0}</p>
         </div>
       </div>
       <div className="card" style={{ padding: 20 }}>

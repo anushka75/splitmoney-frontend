@@ -35,7 +35,8 @@ export function AuthProvider({ children }) {
     async login(credentials) {
       const data = await loginUser(credentials);
       if (data?.access_token) localStorage.setItem("splitmoney_token", data.access_token);
-      setUser(await hydrateUser(data));
+      const hydrated = await hydrateUser(data);
+      setUser(hydrated);
       return data;
     },
     async signup(details) {

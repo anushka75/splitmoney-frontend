@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getApiErrorMessage } from "../api/error";
 import { useAuth } from "../context/AuthContext";
 
 export default function Signup() {
@@ -14,14 +15,15 @@ export default function Signup() {
     setError("");
     try {
       await auth.signup(form);
-      navigate("/dashboard");
+      auth.logout();
+      navigate("/");
     } catch (err) {
-      setError(err?.response?.data?.message || "Signup failed");
+      setError(getApiErrorMessage(err, "Signup failed"));
     }
   };
 
   return (
-    <div className="app-shell layout" style={{ display: "grid", placeItems: "center" }}>
+    <div className="layout" style={{ display: "grid", placeItems: "center", minHeight: "100vh" }}>
       <form className="card stack" onSubmit={submit} style={{ width: "min(440px, 100%)", padding: 24 }}>
         <h1>Create account</h1>
         <input className="field" placeholder="First Name" value={form.first_name} onChange={(e) => setForm({ ...form, first_name: e.target.value })} />
